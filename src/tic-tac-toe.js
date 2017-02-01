@@ -10,166 +10,65 @@ class TicTacToe {
     }
 
     getCurrentPlayerSymbol() {
-        if (!this.Game){
-            return 'x';
-        }
-        if (this.x > this.o){
-            return 'o';
-        }else{
-            return 'x';
-        }
+        return !this.Game ? 'x' : this.x > this.o ? 'o' : 'x';
     }
 
     nextTurn(rowIndex, columnIndex) {
-        if (!this.x && !this.o){
-            this.x++;
-            this.Game[rowIndex][columnIndex] = 'x';
-        }
-        if (this.x === this.o){
-            this.x++;
-            if (!this.Game[rowIndex][columnIndex]) {
-                this.Game[rowIndex][columnIndex] = 'x';
-            }else{
-                this.x--;
-            }
-        }else{
-            this.o++;
-            if (!this.Game[rowIndex][columnIndex]) {
-                this.Game[rowIndex][columnIndex] = 'o';
-            }else{
-                this.o--;
-            }
+        let symbol = this.getCurrentPlayerSymbol();
+        if (!this.Game[rowIndex][columnIndex]) {
+            this.Game[rowIndex][columnIndex] = symbol;
+            this[symbol]++;
         }
     }
 
     isFinished() {
-        let m = 0;
-        if (this.x + this.o === 9){
-            return true;
-        }else{
-            for (let i = 0; i <= 2; i++){
-                if (this.Game[i][0] && this.Game[i][0] === this.Game[i][1] && this.Game[i][0] === this.Game[i][2]) {
-                    m++;
-                    return true;
-                }
-                if (this.Game[0][i] && this.Game[0][i] === this.Game[1][i] && this.Game[0][i] === this.Game[2][i]){
-                    m++;
-                    return true;
-                }
-            }
-            if (this.Game[0][0] && this.Game[0][0] === this.Game[1][1] && this.Game[0][0] === this.Game[2][2]){
-                m++;
-                return true;
-            }
-            if (this.Game[0][2] && this.Game[0][2] === this.Game[1][1] && this.Game[0][2] === this.Game[2][0]){
-                m++;
-                return true;
-            }
-            if (m === 0){
-                return false;
-            }
-
-        }
+        return this.getWinner() || this.noMoreTurns() ? true : false;
     }
 
     getWinner() {
-        let m = 0;
         if (this.x > this.o) {
             for (let i = 0; i <= 2; i++) {
-                if (this.Game[i][0] && this.Game[i][0] === this.Game[i][1] && this.Game[i][0] === this.Game[i][2]) {
-                    m++;
-                    return 'x';
-                }
-                if (this.Game[0][i] && this.Game[0][i] === this.Game[1][i] && this.Game[0][i] === this.Game[2][i]) {
-                    m++;
-                    return 'x';
-                }
-                if (this.Game[0][0] && this.Game[0][0] === this.Game[1][1] && this.Game[0][0] === this.Game[2][2]) {
-                    m++;
-                    return 'x';
-                }
-                if (this.Game[0][2] && this.Game[0][2] === this.Game[1][1] && this.Game[0][2] === this.Game[2][0]) {
-                    m++;
+                if ((this.Game[i][0] && this.Game[i][0] === this.Game[i][1] && this.Game[i][0] === this.Game[i][2]) ||
+                    (this.Game[0][i] && this.Game[0][i] === this.Game[1][i] && this.Game[0][i] === this.Game[2][i]) ||
+                    (this.Game[0][0] && this.Game[0][0] === this.Game[1][1] && this.Game[0][0] === this.Game[2][2]) ||
+                    (this.Game[0][2] && this.Game[0][2] === this.Game[1][1] && this.Game[0][2] === this.Game[2][0])) {
                     return 'x';
                 }
             }
-            if (m === 0){
-                return null
-            }
+            return null;
         } else {
-            m = 0;
             if (this.x === this.o) {
                 for (let i = 0; i <= 2; i++) {
-                    if (this.Game[i][0] && this.Game[i][0] === this.Game[i][1] && this.Game[i][0] === this.Game[i][2]) {
-                        m++;
-                        return 'o';
-                    }
-                    if (this.Game[0][i] && this.Game[0][i] === this.Game[1][i] && this.Game[0][i] === this.Game[2][i]) {
-                        m++;
-                        return 'o';
-                    }
-                    if (this.Game[0][0] && this.Game[0][0] === this.Game[1][1] && this.Game[0][0] === this.Game[2][2]) {
-                        m++;
-                        return 'o';
-                    }
-                    if (this.Game[0][2] && this.Game[0][2] === this.Game[1][1] && this.Game[0][2] === this.Game[2][0]) {
-                        m++;
+                    if ((this.Game[i][0] && this.Game[i][0] === this.Game[i][1] && this.Game[i][0] === this.Game[i][2]) ||
+                        (this.Game[0][i] && this.Game[0][i] === this.Game[1][i] && this.Game[0][i] === this.Game[2][i]) ||
+                        (this.Game[0][0] && this.Game[0][0] === this.Game[1][1] && this.Game[0][0] === this.Game[2][2]) ||
+                        (this.Game[0][2] && this.Game[0][2] === this.Game[1][1] && this.Game[0][2] === this.Game[2][0])) {
                         return 'o';
                     }
                 }
-                if (m === 0) {
-                    return null;
-                }
+                return null;
             }
         }
     }
 
     noMoreTurns() {
-        if(this.x + this.o === 9){
-            return true;
-        }else{
-            return false;
-        }
+        return this.x + this.o === 9;
     }
 
     isDraw() {
-        let k = 0;
-        if(this.x + this.o === 9){
-            for (let i = 0; i < 2; i++){
-                if (this.Game[i][0] === this.Game[i][1] && this.Game[i][0] === this.Game[i][2]) {
-                    k++;
-                }
-                if (this.Game[0][i] === this.Game[1][i] && this.Game[0][i] === this.Game[2][i]){
-                    k++;
-                }
-            }
-            if (this.Game[0][0] === this.Game[1][1] && this.Game[0][0] === this.Game[2][2]){
-                k++;
-            }
-            if (this.Game[0][2] === this.Game[1][1] && this.Game[0][2] === this.Game[2][0]){
-                k++;
-            }
-            if (k === 0){
-                return true;
-            }else{
-                return false;
-            }
-        }else{
-            return false;
+        if (!this.getWinner() && this.noMoreTurns()) {
+            return true;
         }
+        return false;
     }
 
     getFieldValue(rowIndex, colIndex) {
-        if(rowIndex <= 2 && colIndex <= 2 ){
-            if (!this.Game[rowIndex][colIndex]){
-                return null;
-            }else {
-                return this.Game[rowIndex][colIndex];
-            }
-        }else{
-            return null;
+        if (rowIndex <= 2 && colIndex <= 2) {
+            return !this.Game[rowIndex][colIndex] ? null : this.Game[rowIndex][colIndex];
         }
+        return null;
     }
 }
+
 
 module.exports = TicTacToe;
